@@ -1,0 +1,18 @@
+.controls__btn {
+    font-family:  Courier, monospace;
+    width: 70px;
+    height: 40px;
+
+    border: none;
+
+    cursor: pointer;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px rgb(67, 66, 66);
+    background-color: rgb(250, 10, 10, 0.42)
+  
+}
+
+.controls__btn:not(:last-child) {
+    margin-right: 10px;
+}
+
