@@ -1,44 +1,43 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { Feedback } from './Feedback/Feedback';
 import { Statistics } from './Statistics/Statistics';
 import { Section } from './Section/Section';
 import { Notification } from './Notification/Notification';
 
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  }
+export const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
 
-  countTotalFeedbacks() {
-    const { good, neutral, bad } = this.state;
-    return good + neutral + bad;
-  }
+   const onLeaveFeedback = evt => {
+    switch (evt) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
+      case 'bad':
+        setBad(bad + 1);
+        break;
+      default:
+        break;
+    }
+  };
 
-  countPositiveFeedbacks() {
-    const totalFeedbacks = this.countTotalFeedbacks();
-    const positiveFeedbacks = this.state.good;
-    return Math.round((positiveFeedbacks * 100) / totalFeedbacks);
-  }
 
-  onLeaveFeedback(evt) {
-    this.setState(prevState => ({ [evt]: prevState[evt] + 1 }));
-    
-  }
-  render() {
-    const { good, neutral, bad } = this.state;
-    const totalFeedbacks = this.countTotalFeedbacks();
-    const positivePercentage = this.countPositiveFeedbacks();
+   const totalFeedbacks = good + neutral + bad;
+
+  const positive = Math.round((good * 100) / totalFeedbacks);
   
     return (
       <>
         <Section title="Please leave your feedback">
           <Feedback
             options={['good', 'neutral', 'bad']}
-            onLeaveFeedback={this.onLeaveFeedback.bind(this)}
+            onLeaveFeedback={onLeaveFeedback}
           />
         </Section>
 
@@ -49,7 +48,7 @@ export class App extends Component {
               neutral={neutral}
               bad={bad}
               total={totalFeedbacks}
-              positivePercentage={positivePercentage}
+              positivePercentage={positive}
             />
           ) : (
             <Notification message={'There is no feedback'} />
@@ -58,4 +57,3 @@ export class App extends Component {
       </>
     );
   }
-}
